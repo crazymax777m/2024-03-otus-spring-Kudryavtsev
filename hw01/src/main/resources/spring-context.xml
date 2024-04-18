@@ -13,33 +13,23 @@
     </bean>
 
     <bean id="testFileNameProvider" class="ru.otus.hw.config.AppProperties">
-        <constructor-arg value="questions.csv">
-
-        </constructor-arg>
+        <constructor-arg value="questions.csv"/>
     </bean>
 
     <bean id="questionDao" class="ru.otus.hw.dao.CsvQuestionDao">
-        <constructor-arg ref="testFileNameProvider">
-
-        </constructor-arg>
+        <constructor-arg ref="testFileNameProvider"/>
     </bean>
 
     <bean id="testRunnerService" class="ru.otus.hw.service.TestRunnerServiceImpl">
 
-        <constructor-arg ref="testService">
-
-        </constructor-arg>
+        <constructor-arg ref="testService"/>
 
     </bean>
 
     <bean id="testService" class="ru.otus.hw.service.TestServiceImpl">
-        <constructor-arg ref="ioService">
+        <constructor-arg ref="ioService"/>
 
-        </constructor-arg>
-
-        <constructor-arg ref="questionDao">
-
-        </constructor-arg>
+        <constructor-arg ref="questionDao"/>
 
     </bean>
 
