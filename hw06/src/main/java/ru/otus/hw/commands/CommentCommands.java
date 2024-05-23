@@ -32,7 +32,7 @@ public class CommentCommands {
 
     @ShellMethod(value = "Insert comment", key = "cins")
     public String insertComment(String text, long bookId) {
-        return commentConverter.commentBookToString(commentService.insert(text, bookId));
+        return commentConverter.commentBookToString(commentService.create(text, bookId));
     }
 
     @ShellMethod(value = "Update comment", key = "cupd")

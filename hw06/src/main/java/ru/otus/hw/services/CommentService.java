@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentService {
-    CommentBookDto insert(String text, long bookId);
+    CommentBookDto create(String text, long bookId);
 
     CommentBookDto update(long id, String text);
 

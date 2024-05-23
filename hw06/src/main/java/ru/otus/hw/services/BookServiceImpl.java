@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookDto insert(String title, long authorId, Set<Long> genresIds) {
+    public BookDto create(String title, long authorId, Set<Long> genresIds) {
         Book book = save(0, title, authorId, genresIds);
         return bookMapper.toDto(book);
     }
