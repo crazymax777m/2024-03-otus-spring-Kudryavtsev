@@ -2,6 +2,7 @@ package ru.otus.hw.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dtos.comment.CommentDto;
 import ru.otus.hw.dtos.comment.CommentMapper;
@@ -47,12 +48,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public Optional<CommentBookDto> findById(long id) {
         return commentRepository.findById(id)
                 .map(commentMapper::toBookDto);
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<CommentDto> findByBookId(long bookId) {
         return commentRepository.findByBookId(bookId).stream()
                 .map(commentMapper::toDto)

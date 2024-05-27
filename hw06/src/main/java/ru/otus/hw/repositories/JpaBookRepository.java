@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.models.Book;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,11 @@ public class JpaBookRepository implements BookRepository {
 
     @Override
     public Optional<Book> findById(long id) {
+        var properties = new HashMap<String, Object>();
+        properties.put("jakarta.persistence.fetchgraph",
+                em.getEntityGraph("book-with-author-graph"));
 
-        return Optional.ofNullable(em.find(Book.class, id));
+        return Optional.ofNullable(em.find(Book.class, id, properties));
 
     }
 

@@ -55,7 +55,15 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto update(long id, String title, long authorId, Set<Long> genresIds) {
-        Book book = save(id, title, authorId, genresIds);
+        var book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book with this id= " + id + "is not present"));
+
+        book.setTitle(title);
+        book.setAuthor(authorRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Author not found")));
+        book.setGenres(new HashSet<>(genreRepository.findAllByIds(genresIds)));
+        bookRepository.save(book);
+
         return bookMapper.toDto(book);
     }
 
