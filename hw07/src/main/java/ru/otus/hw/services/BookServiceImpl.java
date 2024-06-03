@@ -46,18 +46,22 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto create(String title, long authorId, Set<Long> genresIds) {
-        Book book = save(0, title, authorId, genresIds);
+
+        var book = new Book();
+        this.updateFields(book, title, authorId, genresIds);
+
         return bookMapper.toDto(book);
     }
 
     @Override
     @Transactional
     public BookDto update(long id, String title, long authorId, Set<Long> genresIds) {
-        if (!bookRepository.existsById(id)) {
-            throw new EntityNotFoundException("There is no such book with id = %d".formatted(id));
-        }
 
-        var book = save(id, title, authorId, genresIds);
+        var book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("There is no such book with id = %d".formatted(id)));
+
+        this.updateFields(book, title, authorId, genresIds);
+
         return bookMapper.toDto(book);
     }
 
@@ -67,7 +71,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
-    private Book save(long id, String title, long authorId, Set<Long> genresIds) {
+    private void updateFields(Book book, String title, long authorId, Set<Long> genresIds) {
         if (genresIds.isEmpty()) {
             throw new IllegalArgumentException("Genres ids must not be null");
         }
@@ -79,7 +83,10 @@ public class BookServiceImpl implements BookService {
             throw new EntityNotFoundException("One or all genres with ids %s not found".formatted(genresIds));
         }
 
-        var book = new Book(id, title, author, new HashSet<>(genres));
-        return bookRepository.save(book);
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setGenres(new HashSet<>(genres));
+
+        bookRepository.save(book);
     }
 }

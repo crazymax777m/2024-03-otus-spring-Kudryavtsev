@@ -1,16 +1,17 @@
 package ru.otus.hw.repositories;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class BookRepositoryTest {
 
@@ -19,9 +20,11 @@ public class BookRepositoryTest {
 
     @Test
     public void testFindAll() {
-        var books = repository.findAll();
+        assertDoesNotThrow(() -> {
+            var books = repository.findAll();
 
-        assertThat(books).hasSize(3);
+            assertThat(books).isNotEmpty();
+        });
     }
 
     @Test

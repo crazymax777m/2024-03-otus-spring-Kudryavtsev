@@ -2,11 +2,10 @@ package ru.otus.hw.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.hw.dtos.comment.CommentBookDto;
 import ru.otus.hw.dtos.comment.CommentDto;
 import ru.otus.hw.dtos.comment.CommentMapper;
-import ru.otus.hw.dtos.comment.CommentBookDto;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
@@ -48,14 +47,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(readOnly = true)
     public Optional<CommentBookDto> findById(long id) {
         return commentRepository.findById(id)
                 .map(commentMapper::toBookDto);
     }
 
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(readOnly = true)
     public List<CommentDto> findByBookId(long bookId) {
         return commentRepository.findCommentsByBookId(bookId).stream()
                 .map(commentMapper::toDto)
@@ -63,6 +62,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         commentRepository.deleteById(id);
     }
