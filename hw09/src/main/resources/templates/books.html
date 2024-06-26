@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Books</title>
+</head>
+<body>
+<h3>Books:</h3>
+<a th:href="@{/books}"><button>Add book</button></a>
+<table class="books">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Genres</th>
+    <th>Comments</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="book : ${books}">
+    <td th:text="${book.id}">id</td>
+    <td th:text="${book.title}">title</td>
+    <td th:text="${book.author.fullName}">author full name</td>
+    <td th:text="${#strings.listJoin(book.genres.![name], ', ')}">genres</td>
+    <td><a href="book-form.html" th:href="@{/books/{id}/comments(id=${book.id})}">show comments</a></td>
+    <td>
+      <a href="book-form.html" th:href="@{/books/{bookId}(bookId=${book.id})}">edit</a>
+      <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post">
+        <button type="submit">delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
