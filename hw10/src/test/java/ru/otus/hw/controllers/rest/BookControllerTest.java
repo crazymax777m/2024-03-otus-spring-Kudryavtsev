@@ -16,7 +16,7 @@ import ru.otus.hw.dto.book.BookDto;
 import ru.otus.hw.dto.book.BookSummaryDto;
 import ru.otus.hw.dto.book.BookUpdateDto;
 import ru.otus.hw.dto.genre.GenreDto;
-import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.services.BookService;
 
 import java.util.Arrays;
@@ -117,7 +117,7 @@ public class BookControllerTest {
 
     @Test
     void shouldReturn404IfBookIsNotExist() throws Exception {
-        when(bookService.findById(11)).thenThrow(new EntityNotFoundException());
+        when(bookService.findById(11)).thenThrow(new NotFoundException());
 
         mockMvc.perform(get("/api/v1/books/11"))
                 .andExpect(status().isNotFound());

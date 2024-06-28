@@ -14,7 +14,7 @@ import ru.otus.hw.dto.comment.CommentCreateDto;
 import ru.otus.hw.dto.comment.CommentDto;
 import ru.otus.hw.dto.comment.CommentSummaryDto;
 import ru.otus.hw.dto.comment.CommentUpdateDto;
-import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.services.CommentService;
 
 import java.util.List;
@@ -93,7 +93,7 @@ public class CommentControllerTest {
 
     @Test
     void shouldReturn404IfCommentIsNotExist() throws Exception {
-        when(commentService.findById(2L)).thenThrow(new EntityNotFoundException());
+        when(commentService.findById(2L)).thenThrow(new NotFoundException());
 
         mockMvc.perform(get("/api/v1/comments/2"))
                 .andExpect(status().isNotFound());

@@ -7,7 +7,7 @@ import ru.otus.hw.dto.comment.CommentCreateDto;
 import ru.otus.hw.dto.comment.CommentDto;
 import ru.otus.hw.dto.comment.CommentMapper;
 import ru.otus.hw.dto.comment.CommentSummaryDto;
-import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.repositories.BookRepository;
@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto create(CommentCreateDto commentDto) {
         Book book = bookRepository.findById(commentDto.getBookId())
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Book with id %d not found".formatted(commentDto.getBookId())));
+                        new NotFoundException("Book with id %d not found".formatted(commentDto.getBookId())));
 
         Comment comment = new Comment(0, commentDto.getText(), book);
 
@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto update(long id, String text) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Comment with id %d not found".formatted(id)));
+                .orElseThrow(() -> new NotFoundException("Comment with id %d not found".formatted(id)));
         comment.setText(text);
 
         return commentMapper.toDto(commentRepository.save(comment));
@@ -50,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto findById(long id) {
         return commentMapper.toDto(commentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Comment with id %d not found".formatted(id))));
+                .orElseThrow(() -> new NotFoundException("Comment with id %d not found".formatted(id))));
     }
 
     @Override
